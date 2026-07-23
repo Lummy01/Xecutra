@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Treasury" ALTER COLUMN "balance" SET DEFAULT 0,
+ALTER COLUMN "currency" SET DEFAULT 'USDC';
