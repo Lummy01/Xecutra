@@ -11,6 +11,7 @@ const circleRoutes = require("./routes/circleRoutes");
 const organizationRoutes = require("./routes/organizationRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const circleService = require("./services/circleService");
+const demoRoutes = require("./routes/demoRoutes");
 
 console.log("✅ missionRoutes imported");
 
@@ -27,6 +28,7 @@ app.use("/payment", paymentRoutes);
 app.use("/circle", circleRoutes);
 app.use("/organizations", organizationRoutes);
 app.use("/transactions", transactionRoutes);
+app.use("/demo", demoRoutes);
 
 const PORT = 3000;
 
