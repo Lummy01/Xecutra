@@ -1,12 +1,14 @@
 # Xecutra
 
-> Autonomous Treasury Agent for Organizations powered by AI, Arc, Circle, and USDC.
+> AI-Powered Execution Agent for Individuals and Organizations built on Arc, Circle, and USDC.
 
-Xecutra is an AI treasury agent that autonomously manages organizational spending.
+**Vision:** Enable AI agents to safely execute autonomous financial workflows for individuals and organizations using programmable money on Arc.
+ 
+Xecutra is an AI-powered execution agent that autonomously manages treasury, escrow, and payment workflows on Arc using USDC.
 
-Instead of manually reviewing invoices, releasing payments, and managing treasury operations, organizations define programmable guardrails while Xecutra executes approved workflows automatically.
+It enables **individuals and organizations** to define programmable spending rules and financial guardrails, allowing AI agents to securely approve transactions, manage wallets, lock funds in escrow, execute missions, and autonomously release payments.
 
-The agent can:
+The current MVP demonstrates this through an autonomous treasury workflow where an AI agent can:
 
 - Plan missions
 - Select vendors
@@ -20,33 +22,35 @@ Xecutra demonstrates what an autonomous economic agent looks like when given a w
 
 ## The Problem
 
-Organizations still rely on manual financial workflows.
+Financial workflows remain heavily dependent on manual approvals, whether for individuals managing personal finances or organizations overseeing treasury operations.
 
-Every vendor payment typically requires multiple human approvals, manual treasury checks, invoice reviews, delivery verification, and payment execution.
+Tasks such as reviewing invoices, approving vendors, validating spending policies, confirming delivery, managing escrow, and executing payments often require multiple manual steps before funds can move.
 
-As AI agents become capable of performing real work, they still cannot autonomously complete economic workflows because they lack programmable financial infrastructure.
+As AI agents become capable of performing real work, they still struggle to complete financial workflows autonomously because they lack programmable financial infrastructure.
 
-Without wallets, guardrails, and programmable payments, AI remains an assistant rather than an autonomous economic participant.
+Without wallets, programmable money, guardrails, and secure payment controls, AI remains an assistant rather than an autonomous economic participant.
 
-Xecutra solves this by giving an AI agent the ability to safely manage treasury operations within predefined financial rules.
+Xecutra addresses this by giving AI agents the ability to safely execute treasury and payment workflows within predefined financial rules while maintaining transparency and control.
 
 ## The Solution
 
-Xecutra is an autonomous treasury agent that combines AI decision-making with programmable money on Arc.
+Xecutra is an autonomous AI execution agent that combines AI decision-making with programmable money on Arc.
 
-Organizations define financial guardrails such as spending limits, approved vendors, treasury reserves, and escrow requirements. Once these rules are in place, Xecutra can independently execute operational spending while remaining within organizational policy.
+Individuals and organizations define financial guardrails such as spending limits, approved vendors, treasury reserves, and escrow requirements. Once these rules are in place, Xecutra can independently execute approved financial workflows while remaining within user-defined policies.
+
+The current MVP demonstrates this through an autonomous treasury workflow for organizations.
 
 A typical workflow looks like this:
 
 1. An organization creates a mission.
 2. The AI evaluates the request and selects the best vendor.
-3. Guardrails validate that the mission is allowed.
+3. Guardrails validate that the mission complies with treasury policies.
 4. Funds are locked in escrow.
 5. Delivery is confirmed.
 6. Xecutra releases USDC to the vendor on Arc.
 7. Every payment is recorded for transparency and auditing.
 
-This transforms treasury management from a manual approval process into an autonomous financial workflow.
+This demonstrates how programmable money enables AI agents to move beyond recommendations and autonomously execute complete financial workflows within predefined guardrails.
 
 ## Key Features
 
@@ -66,12 +70,12 @@ This transforms treasury management from a manual approval process into an auton
   - Records every payment with Circle transaction IDs, blockchain transaction hashes, and payment status.
 
 - 🏢 **Treasury Management**
-  - Maintains organization wallets and treasury balances.
+  - Manages wallets, treasury balances, and programmable financial controls for individuals and organizations.
 
 - ⚡ **End-to-End Autonomous Workflow**
   - Mission → AI Decision → Guardrails → Escrow → Delivery → Payment → Transaction Record.
 
-  ## Architecture
+## Architecture
 
 ```text
                     Organization
@@ -133,8 +137,7 @@ This transforms treasury management from a manual approval process into an auton
 - GitHub
 
 ## Demo Flow
-
-The current MVP demonstrates a complete autonomous treasury workflow.
+The current MVP demonstrates a complete autonomous treasury workflow for organizations. Future versions will extend the same autonomous execution model to individual users.
 
 ### 1. Organization Dashboard
 
@@ -203,7 +206,7 @@ The payment is stored together with:
 
 Xecutra was designed specifically for the **Agentic Economy Track** on Arc.
 
-The project demonstrates how autonomous AI agents can safely participate in economic activities when provided with programmable money and financial guardrails.
+The project demonstrates how AI agents can autonomously execute real financial workflows using programmable money, escrow, and treasury guardrails on Arc.
 
 Arc enables Xecutra to:
 
@@ -213,7 +216,7 @@ Arc enables Xecutra to:
 - Build trust through transparent, verifiable blockchain transactions.
 - Move from AI-assisted workflows to fully autonomous financial execution.
 
-Instead of simply generating recommendations, Xecutra allows an AI agent to complete an entire financial workflow—from planning to payment—while remaining within organizational policies.
+Instead of simply generating recommendations, Xecutra demonstrates how AI agents can autonomously plan, validate, secure, and execute complete financial workflows while remaining within predefined treasury policies.
 
 ## Roadmap
 
@@ -234,7 +237,7 @@ Instead of simply generating recommendations, Xecutra allows an AI agent to comp
 - 📊 Treasury analytics dashboard
 - 🤖 LLM-powered vendor selection
 - 📈 Treasury forecasting and budgeting
-- 👥 Multi-organization support
+- 👥 Multi-user and multi-organization support
 - 🔐 Multi-signature approval policies
 - 📱 Notifications and alerts
 - 🌐 Production deployment
