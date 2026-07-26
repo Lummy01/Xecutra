@@ -7,6 +7,11 @@ const missionController = require("../controllers/missionController");
 // Create Mission
 router.post("/", missionController.createMission);
 
+router.get(
+    "/transaction/:transactionId",
+    missionController.getTransactionStatus
+);
+
 // Get Mission
 router.get("/:organizationId", missionController.getMissions);
 

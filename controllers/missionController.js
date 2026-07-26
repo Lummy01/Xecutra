@@ -1,6 +1,7 @@
 const missionService = require("../services/missionService");
 const aiPlanner = require("../services/aiPlanner");
 const escrowService = require("../services/escrowService");
+const circleService = require("../services/circleService");
 
 async function createMission(req, res) {
     try {
@@ -52,7 +53,26 @@ async function getMissions(req, res) {
     }
 }
 
+async function getTransactionStatus(req, res) {
+    try {
+        const result = await circleService.getTransactionStatus(
+            req.params.transactionId
+        );
+
+        res.json(result);
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+}
+
 module.exports = {
     createMission,
-    getMissions
+    getMissions,
+    getTransactionStatus
 };
