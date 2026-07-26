@@ -4,11 +4,9 @@
 
 **Vision:** Enable AI agents to safely execute autonomous financial workflows for individuals and organizations using programmable money on Arc.
  
-Xecutra is an AI-powered execution agent that autonomously manages treasury, escrow, and payment workflows on Arc using USDC.
+Xecutra enables individuals and organizations to define programmable spending rules and financial guardrails, allowing AI agents to autonomously plan missions, manage wallets, secure funds in escrow, approve transactions, and release payments on Arc using USDC.
 
-It enables **individuals and organizations** to define programmable spending rules and financial guardrails, allowing AI agents to securely approve transactions, manage wallets, lock funds in escrow, execute missions, and autonomously release payments.
-
-The current MVP demonstrates this through an autonomous treasury workflow where an AI agent can:
+The current MVP demonstrates this vision through an autonomous treasury workflow where the AI agent can:
 
 - Plan missions
 - Select vendors
