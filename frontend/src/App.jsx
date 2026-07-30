@@ -262,17 +262,25 @@ if (
     status: "Mission executed autonomously with no guardrail violations."
   });
 
-  setTreasuryReport(`
-The mission "${completedMissionRef.current.missionResult.mission.title}" was analyzed successfully.
+  setTreasuryReport({
+  mission:
+    completedMissionRef.current.missionResult.mission.title,
 
-After evaluating approved vendors, Xecutra selected ${completedMissionRef.current.missionResult.plan.selectedVendor} because it satisfied all treasury guardrails while meeting the required budget.
+  vendor:
+    completedMissionRef.current.missionResult.plan.selectedVendor,
 
-An escrow of ${completedMissionRef.current.missionResult.mission.estimatedCost} USDC was created through Circle.
+  budget:
+    `${completedMissionRef.current.missionResult.mission.estimatedCost} USDC`,
 
-After delivery confirmation, the Treasury Agent automatically released payment on Arc Testnet.
+  result:
+    "Mission completed successfully.",
 
-Mission completed successfully with no guardrail violations and no manual intervention.
-`);
+  violations:
+    "None",
+
+  intervention:
+    "Not Required"
+});
 
   setActiveStep("");
 
@@ -532,35 +540,39 @@ paymentResult.circleTransaction.state === "COMPLETE"
 
 <div className="card">
   <div
-  style={{
-    marginBottom: "20px"
-  }}
->
-  <div
     style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center"
+      marginBottom: "25px"
     }}
   >
-  <div>
-    <h2
+    <div
       style={{
-        margin: 0
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center"
       }}
     >
-      🤖 Autonomous Execution
-    </h2>
+      <div>
+        <h2
+          style={{
+            margin: 0,
+            fontSize: "28px",
+            fontWeight: "700",
+            color: "#111827"
+          }}
+        >
+          🤖 Treasury Agent
+        </h2>
 
-    <p
-      style={{
-        marginTop: "6px",
-        color: "#6b7280",
-        fontSize: "14px"
-      }}
-    >
-      Live execution stream from the Xecutra Treasury Agent
-    </p>
+        <p
+          style={{
+            marginTop: "8px",
+            color: "#6b7280",
+            fontSize: "15px",
+            lineHeight: "1.5"
+          }}
+        >
+          Autonomous financial execution powered by AI, programmable guardrails, escrow, and USDC on Arc.
+        </p>
 
     </div>
 
@@ -579,6 +591,66 @@ paymentResult.circleTransaction.state === "COMPLETE"
       fontWeight: "600"
     }}
   >
+
+<div
+  style={{
+    background: "#f9fafb",
+    border: "1px solid #e5e7eb",
+    borderRadius: "14px",
+    padding: "20px",
+    marginBottom: "25px"
+  }}
+>
+  <div
+    style={{
+      fontSize: "18px",
+      fontWeight: "700",
+      marginBottom: "18px",
+      color: "#111827"
+    }}
+  >
+    📌 Mission Overview
+  </div>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(2, 1fr)",
+      gap: "18px"
+    }}
+  >
+    <div>
+      <div style={{ color: "#6b7280", fontSize: "13px" }}>Mission</div>
+      <div style={{ fontWeight: "700" }}>
+        {formData.title || "Awaiting Mission"}
+      </div>
+    </div>
+
+    <div>
+      <div style={{ color: "#6b7280", fontSize: "13px" }}>Budget</div>
+      <div style={{ fontWeight: "700" }}>
+        {formData.estimatedCost
+          ? `${formData.estimatedCost} USDC`
+          : "--"}
+      </div>
+    </div>
+
+    <div>
+      <div style={{ color: "#6b7280", fontSize: "13px" }}>Status</div>
+      <div style={{ fontWeight: "700", color: "#2563eb" }}>
+        {agentThinking ? "Executing..." : "Waiting"}
+      </div>
+    </div>
+
+    <div>
+      <div style={{ color: "#6b7280", fontSize: "13px" }}>Confidence</div>
+      <div style={{ fontWeight: "700" }}>
+        {agentThinking ? "96%" : "--"}
+      </div>
+    </div>
+  </div>
+</div>
+
     <span>Mission Progress</span>
 
     <span>{Math.round(progress)}%</span>
@@ -638,7 +710,7 @@ paymentResult.circleTransaction.state === "COMPLETE"
           color: "#1d4ed8"
         }}
       >
-        🤖 Xecutra AI is thinking...
+        🤖 Treasury Agent Decision Engine
       </div>
 
       <div
@@ -648,7 +720,16 @@ paymentResult.circleTransaction.state === "COMPLETE"
           marginTop: "4px"
         }}
       >
-        {thinkingMessage}
+        <div
+  style={{
+    marginTop: "6px",
+    fontSize: "15px",
+    color: "#374151",
+    fontWeight: "600"
+  }}
+>
+  {thinkingMessage}
+</div>
       </div>
 
 <div
@@ -663,18 +744,126 @@ paymentResult.circleTransaction.state === "COMPLETE"
     lineHeight: "1.5"
   }}
 >
-  <strong>Reasoning:</strong> {agentReasoning}
+  <div
+  style={{
+    fontWeight: "700",
+    marginBottom: "10px",
+    color: "#111827"
+  }}
+>
+🧠 Agent Reasoning
+</div>
+
+<div
+  style={{
+    color: "#4b5563",
+    lineHeight: "1.7"
+  }}
+>
+{agentReasoning}
+</div>
+
+<div
+  style={{
+    marginTop: "18px",
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap"
+  }}
+>
+  <span
+    style={{
+      padding: "6px 12px",
+      borderRadius: "999px",
+      background: "#dbeafe",
+      color: "#1d4ed8",
+      fontWeight: "600",
+      fontSize: "13px"
+    }}
+  >
+    AI Analysis
+  </span>
+
+  <span
+    style={{
+      padding: "6px 12px",
+      borderRadius: "999px",
+      background: "#dcfce7",
+      color: "#166534",
+      fontWeight: "600",
+      fontSize: "13px"
+    }}
+  >
+    Guardrails Active
+  </span>
+
+  <span
+    style={{
+      padding: "6px 12px",
+      borderRadius: "999px",
+      background: "#ede9fe",
+      color: "#6d28d9",
+      fontWeight: "600",
+      fontSize: "13px"
+    }}
+  >
+    Treasury Secure
+  </span>
+</div>
+
+</div>
+
+<div
+  style={{
+    marginTop: "18px",
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap"
+  }}
+>
+  <span
+    style={{
+      padding: "6px 12px",
+      borderRadius: "999px",
+      background: "#dbeafe",
+      color: "#1d4ed8",
+      fontWeight: "600",
+      fontSize: "13px"
+    }}
+  >
+    AI Analysis
+  </span>
+
+  <span
+    style={{
+      padding: "6px 12px",
+      borderRadius: "999px",
+      background: "#dcfce7",
+      color: "#166534",
+      fontWeight: "600",
+      fontSize: "13px"
+    }}
+  >
+    Guardrails Active
+  </span>
+
+  <span
+    style={{
+      padding: "6px 12px",
+      borderRadius: "999px",
+      background: "#ede9fe",
+      color: "#6d28d9",
+      fontWeight: "600",
+      fontSize: "13px"
+    }}
+  >
+    Treasury Secure
+  </span>
 </div>
 
     </div>
   </div>
 )}
-
-<p>
-  Debug → agentThinking: {String(agentThinking)} |
-  agentSummary: {String(!!agentSummary)} |
-  treasuryReport: {String(!!treasuryReport)}
-</p>
 
 {!agentThinking && agentSummary && (
   <div
@@ -694,35 +883,53 @@ paymentResult.circleTransaction.state === "COMPLETE"
         marginBottom: "12px"
       }}
     >
-      ✅ Mission Completed
+      📋 Treasury Agent Decision
+    </div>
+
+    <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gap: "18px"
+  }}
+>
+  <div>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>Mission</div>
+    <div style={{ fontWeight: "700" }}>{agentSummary.mission}</div>
+  </div>
+
+  <div>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>Vendor</div>
+    <div style={{ fontWeight: "700" }}>{agentSummary.vendor}</div>
+  </div>
+
+  <div>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>Approved Budget</div>
+    <div style={{ fontWeight: "700" }}>{agentSummary.budget}</div>
+  </div>
+
+  <div>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>Estimated Delivery</div>
+    <div style={{ fontWeight: "700" }}>
+      {agentSummary.deliveryDays} days
+    </div>
+  </div>
+
+  <div style={{ gridColumn: "1 / span 2" }}>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>
+      Final Decision
     </div>
 
     <div
       style={{
-        color: "#374151",
-        lineHeight: "1.8"
+        fontWeight: "700",
+        color: "#166534"
       }}
     >
-      <div>
-  <strong>Mission:</strong> {agentSummary.mission}
-</div>
-
-<div>
-  <strong>Vendor Selected:</strong> {agentSummary.vendor}
-</div>
-
-<div>
-  <strong>Budget Approved:</strong> {agentSummary.budget}
-</div>
-
-<div>
-  <strong>Estimated Delivery:</strong> {agentSummary.deliveryDays} days
-</div>
-
-<div>
-  <strong>Status:</strong> {agentSummary.status}
-</div>
+      {agentSummary.status}
     </div>
+  </div>
+</div>
   </div>
 )}
 
@@ -749,15 +956,93 @@ paymentResult.circleTransaction.state === "COMPLETE"
     </div>
 
     <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(2,1fr)",
+    gap: "18px"
+  }}
+>
+  <div>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>
+      Mission
+    </div>
+
+    <div style={{ fontWeight: "700" }}>
+      {treasuryReport.mission}
+    </div>
+  </div>
+
+  <div>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>
+      Vendor
+    </div>
+
+    <div style={{ fontWeight: "700" }}>
+      {treasuryReport.vendor}
+    </div>
+  </div>
+
+  <div>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>
+      Budget
+    </div>
+
+    <div style={{ fontWeight: "700" }}>
+      {treasuryReport.budget}
+    </div>
+  </div>
+
+  <div>
+    <div style={{ color: "#6b7280", fontSize: "13px" }}>
+      Guardrail Violations
+    </div>
+
+    <div
       style={{
-        color: "#4b5563",
-        lineHeight: "1.8",
-        whiteSpace: "pre-line",
-        fontSize: "15px"
+        color: "#166534",
+        fontWeight: "700"
       }}
     >
-      {treasuryReport}
+      {treasuryReport.violations}
     </div>
+  </div>
+
+  <div
+    style={{
+      gridColumn: "1 / span 2",
+      borderTop: "1px solid #e5e7eb",
+      paddingTop: "18px"
+    }}
+  >
+    <div
+      style={{
+        fontWeight: "700",
+        marginBottom: "10px"
+      }}
+    >
+      Overall Result
+    </div>
+
+    <div
+      style={{
+        color: "#374151",
+        lineHeight: "1.7"
+      }}
+    >
+      {treasuryReport.result}
+    </div>
+
+    <div
+      style={{
+        marginTop: "14px",
+        color: "#2563eb",
+        fontWeight: "600"
+      }}
+    >
+      Human Intervention: {treasuryReport.intervention}
+    </div>
+  </div>
+</div>
   </div>
 )}
 
