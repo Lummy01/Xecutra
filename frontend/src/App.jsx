@@ -16,6 +16,17 @@ function App() {
   const [deliveryResult, setDeliveryResult] = useState(null);
 const [paymentResult, setPaymentResult] = useState(null);
 const [missions, setMissions] = useState([]);
+const totalMissions = missions.length;
+
+const completedPayments = missions.filter(
+  (mission) => mission.status === "COMPLETED"
+).length;
+
+const activeEscrows = missions.filter(
+  (mission) =>
+    mission.status === "PENDING" ||
+    mission.status === "IN_PROGRESS"
+).length;
 const [executionLog, setExecutionLog] = useState([]);
 const [agentThinking, setAgentThinking] = useState(false);
 const [thinkingMessage, setThinkingMessage] = useState("");
@@ -398,6 +409,36 @@ async function pollTransaction(transactionId) {
         <p>Loading dashboard...</p>
       ) : (
         <>
+  
+  <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "20px",
+    marginBottom: "25px"
+  }}
+>
+  <div className="card">
+    <h3>💰 Treasury</h3>
+    <h2>{treasury.balance} USDC</h2>
+  </div>
+
+  <div className="card">
+    <h3>📋 Missions</h3>
+    <h2>{totalMissions}</h2>
+  </div>
+
+  <div className="card">
+    <h3>🔒 Escrows</h3>
+    <h2>{activeEscrows}</h2>
+  </div>
+
+  <div className="card">
+    <h3>✅ Payments</h3>
+    <h2>{completedPayments}</h2>
+  </div>
+</div>
+  
   <div
   className="dashboard-grid"
   style={{
