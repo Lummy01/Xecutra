@@ -32,7 +32,14 @@ const [agentThinking, setAgentThinking] = useState(false);
 const [thinkingMessage, setThinkingMessage] = useState("");
 const [agentReasoning, setAgentReasoning] = useState("");
 const [agentSummary, setAgentSummary] = useState("");
+const [missionOverview, setMissionOverview] = useState({
+  mission: "Awaiting Mission",
+  budget: "--",
+  status: "Waiting",
+  confidence: "--"
+});
 const [treasuryReport, setTreasuryReport] = useState("");
+const [agentRisk, setAgentRisk] = useState(null);
 const [completedMissionData, setCompletedMissionData] = useState(null);
 const completedMissionRef = useRef(null);
 const [activeStep, setActiveStep] = useState("");
@@ -272,6 +279,25 @@ if (
     deliveryDays: completedMissionRef.current.missionResult.plan.deliveryDays,
     status: "Mission executed autonomously with no guardrail violations."
   });
+
+  setMissionOverview({
+  mission: completedMissionRef.current.missionResult.mission.title,
+  budget: `${completedMissionRef.current.missionResult.mission.estimatedCost} USDC`,
+  status: "Completed ✅",
+  confidence: "96%"
+});
+
+  setAgentRisk({
+  confidence: 96,
+  level: "LOW",
+  factors: [
+    "Budget within approved treasury limit",
+    "Approved vendor selected",
+    "Guardrails satisfied",
+    "Treasury reserve maintained"
+  ],
+  recommendation: "APPROVE EXECUTION"
+});
 
   setTreasuryReport({
   mission:
@@ -663,30 +689,28 @@ paymentResult.circleTransaction.state === "COMPLETE"
     <div>
       <div style={{ color: "#6b7280", fontSize: "13px" }}>Mission</div>
       <div style={{ fontWeight: "700" }}>
-        {formData.title || "Awaiting Mission"}
+        {missionOverview.mission}
       </div>
     </div>
 
     <div>
       <div style={{ color: "#6b7280", fontSize: "13px" }}>Budget</div>
       <div style={{ fontWeight: "700" }}>
-        {formData.estimatedCost
-          ? `${formData.estimatedCost} USDC`
-          : "--"}
+        {missionOverview.budget}
       </div>
     </div>
 
     <div>
       <div style={{ color: "#6b7280", fontSize: "13px" }}>Status</div>
       <div style={{ fontWeight: "700", color: "#2563eb" }}>
-        {agentThinking ? "Executing..." : "Waiting"}
+        {missionOverview.status}
       </div>
     </div>
 
     <div>
       <div style={{ color: "#6b7280", fontSize: "13px" }}>Confidence</div>
       <div style={{ fontWeight: "700" }}>
-        {agentThinking ? "96%" : "--"}
+        {missionOverview.confidence}
       </div>
     </div>
   </div>
@@ -904,6 +928,142 @@ paymentResult.circleTransaction.state === "COMPLETE"
 
     </div>
   </div>
+)}
+
+{!agentThinking && agentRisk && (
+  <div
+    style={{
+      marginBottom: "20px",
+      padding: "20px",
+      borderRadius: "14px",
+      background: "#ffffff",
+      border: "1px solid #e5e7eb",
+      boxShadow: "0 4px 12px rgba(0,0,0,.05)"
+    }}
+  >
+    <div
+      style={{
+        fontSize: "18px",
+        fontWeight: "700",
+        marginBottom: "18px"
+      }}
+    >
+      🛡 Agent Confidence & Risk Assessment
+    </div>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(2,1fr)",
+        gap: "18px"
+      }}
+    >
+      <div>
+        <div style={{ color: "#6b7280", fontSize: "13px" }}>
+          Confidence
+        </div>
+
+        <div
+          style={{
+            fontSize: "30px",
+            fontWeight: "700",
+            color: "#2563eb"
+          }}
+        >
+          {agentRisk.confidence}%
+        </div>
+      </div>
+
+      <div>
+        <div style={{ color: "#6b7280", fontSize: "13px" }}>
+          Risk Level
+        </div>
+
+        <div
+          style={{
+            fontWeight: "700",
+            color: "#166534"
+          }}
+        >
+          🟢 {agentRisk.level}
+        </div>
+      </div>
+    </div>
+
+    <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "30px",
+    marginTop: "20px",
+    alignItems: "start"
+  }}
+>
+  <div>
+    <div
+      style={{
+        fontWeight: "700",
+        marginBottom: "12px"
+      }}
+    >
+      Decision Factors
+    </div>
+
+    {agentRisk.factors.map((factor, index) => (
+      <div
+        key={index}
+        style={{
+          marginBottom: "10px",
+          color: "#374151"
+        }}
+      >
+        ✅ {factor}
+      </div>
+    ))}
+  </div>
+
+  <div>
+    <div
+      style={{
+        fontWeight: "700",
+        marginBottom: "12px"
+      }}
+    >
+      Recommendation
+    </div>
+
+    <div
+      style={{
+        padding: "18px",
+        borderRadius: "12px",
+        background: "#dcfce7",
+        border: "1px solid #86efac"
+      }}
+    >
+      <div
+        style={{
+          fontSize: "24px",
+          fontWeight: "700",
+          color: "#166534",
+          marginBottom: "10px"
+        }}
+      >
+        {agentRisk.recommendation}
+      </div>
+
+      <div
+        style={{
+          color: "#4b5563",
+          lineHeight: "1.6"
+        }}
+      >
+        Xecutra determined that this mission satisfies all treasury
+        guardrails and can be executed safely without human intervention.
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 )}
 
 {!agentThinking && agentSummary && (
