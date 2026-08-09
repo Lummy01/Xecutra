@@ -1,20 +1,32 @@
 function GuardrailCard({ guardrails }) {
   return (
     <div className="card">
-      <h2>🛡️ Guardrails</h2>
+      <h2>🛡 Treasury Guardrails</h2>
 
       <div style={{ marginTop: "20px" }}>
         <p>
           <strong>💵 Max Vendor Spend</strong>
         </p>
-        <p style={{ color: "#2563eb", fontSize: "22px", marginBottom: "18px" }}>
+        <p
+          style={{
+            color: "#2563eb",
+            fontSize: "22px",
+            marginBottom: "18px"
+          }}
+        >
           ${guardrails?.maxVendorSpend}
         </p>
 
         <p>
           <strong>🏦 Minimum Reserve</strong>
         </p>
-        <p style={{ color: "#2563eb", fontSize: "22px", marginBottom: "18px" }}>
+        <p
+          style={{
+            color: "#2563eb",
+            fontSize: "22px",
+            marginBottom: "18px"
+          }}
+        >
           ${guardrails?.minimumReserve}
         </p>
 
@@ -31,7 +43,9 @@ function GuardrailCard({ guardrails }) {
             marginBottom: "16px"
           }}
         >
-          {guardrails?.escrowRequired ? "✅ Enabled" : "❌ Disabled"}
+          {guardrails?.escrowRequired
+            ? "✅ Enabled"
+            : "❌ Not Required"}
         </p>
 
         <p>
@@ -45,8 +59,8 @@ function GuardrailCard({ guardrails }) {
           }}
         >
           {guardrails?.approvedVendorsOnly
-            ? "✅ Enabled"
-            : "❌ Disabled"}
+  ? "✅ Enabled"
+  : "❌ Not Required"}
         </p>
       </div>
     </div>

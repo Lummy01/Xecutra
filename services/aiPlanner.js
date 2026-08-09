@@ -5,26 +5,68 @@ const treasuryService = require("./treasuryService");
 async function planMission(mission) {
 
     const vendors = [
-        {
-            name: "Vendor A",
-            price: mission.estimatedCost + 2,
-            deliveryDays: 7
-        },
-        {
-            name: "Vendor B",
-            price: mission.estimatedCost,
-            deliveryDays: 5
-        }
-    ];
+  {
+    name: "Vendor Alpha",
+    price: mission.estimatedCost * 0.95,
+    deliveryDays: 6,
+    confidence: 91
+  },
+  {
+    name: "Vendor Nexus",
+    price: mission.estimatedCost,
+    deliveryDays: 4,
+    confidence: 96
+  },
+  {
+    name: "Vendor Orion",
+    price: mission.estimatedCost * 1.05,
+    deliveryDays: 2,
+    confidence: 98
+  },
+  {
+    name: "Vendor Quantum",
+    price: mission.estimatedCost * 0.90,
+    deliveryDays: 7,
+    confidence: 88
+  }
+];
 
-    let selectedVendor = vendors[0];
+  const preferredVendors = vendors.filter(
+  (vendor) => vendor.confidence >= 90
+);
 
-    if (
-        vendors[1].price <= vendors[0].price &&
-        vendors[1].deliveryDays <= vendors[0].deliveryDays
-    ) {
-        selectedVendor = vendors[1];
-    }
+const fallbackVendors = vendors.filter(
+  (vendor) => vendor.confidence >= 85
+);
+
+const eligibleVendors =
+  preferredVendors.length > 0
+    ? preferredVendors
+    : fallbackVendors;
+
+const selectedVendor =
+  eligibleVendors.length > 0
+    ? eligibleVendors.reduce((best, vendor) =>
+        vendor.confidence > best.confidence
+          ? vendor
+          : best
+      )
+    : null;
+
+    if (!selectedVendor) {
+  return {
+    approved: false,
+    reason: "No vendor meets the minimum autonomous confidence threshold of 85%.",
+
+    selectedVendor: null,
+    price: null,
+    deliveryDays: null,
+    confidence: 0,
+
+    treasuryBalance: null,
+    guardrails: null
+  };
+}
 
     const guardrails = await guardrailService.getGuardrails(
         mission.organizationId
@@ -47,6 +89,7 @@ async function planMission(mission) {
         selectedVendor: selectedVendor.name,
         price: selectedVendor.price,
         deliveryDays: selectedVendor.deliveryDays,
+        confidence: selectedVendor.confidence,
 
         treasuryBalance: treasury.balance,
         guardrails

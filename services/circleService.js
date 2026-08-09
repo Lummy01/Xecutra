@@ -90,7 +90,7 @@ async function transferUSDC(
 
     destinationAddress,
 
-    amounts: [amount.toString()],
+    amounts: [Number(amount).toFixed(2)],
 
    fee: {
     config: {
@@ -101,6 +101,8 @@ async function transferUSDC(
     idempotencyKey: uuidv4()
 
 };
+
+console.log("Circle Payload:", payload);
 
 const response = await client.createTransaction(payload);
 
@@ -121,26 +123,14 @@ const response = await client.createTransaction(payload);
 }
 
 async function getTransactionStatus(transactionId) {
-    try {
+    const response = await client.getTransaction({
+        id: transactionId
+    });
 
-        const response = await client.getTransaction({
-            id: transactionId
-        });
-
-        return {
-            success: true,
-            transaction: response.data
-        };
-
-    } catch (error) {
-
-        return {
-            success: false,
-            message: error.message,
-            error
-        };
-
-    }
+    return {
+        success: true,
+        transaction: response.data
+    };
 }
 
 module.exports = {

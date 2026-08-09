@@ -12,6 +12,11 @@ router.get(
     missionController.getTransactionStatus
 );
 
+router.patch(
+    "/:id/complete",
+    missionController.completeMission
+);
+
 // Get Mission
 router.get("/:organizationId", missionController.getMissions);
 

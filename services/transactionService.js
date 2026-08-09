@@ -19,7 +19,7 @@ async function updateTransactionStatus(
     status,
     txHash
 ) {
-    return await prisma.transaction.update({
+    const transaction = await prisma.transaction.update({
         where: {
             circleTxId
         },
@@ -28,6 +28,22 @@ async function updateTransactionStatus(
             txHash
         }
     });
+
+    if (
+        status === "CONFIRMED" ||
+        status === "COMPLETE"
+    ) {
+        await prisma.mission.update({
+            where: {
+                id: transaction.missionId
+            },
+            data: {
+                status: "Completed"
+            }
+        });
+    }
+
+    return transaction;
 }
 
 module.exports = {

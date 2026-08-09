@@ -14,7 +14,6 @@ async function createMission(data) {
     });
 }
 
-
 async function updateMissionDecision(id, plan) {
     return await prisma.mission.update({
         where: {
@@ -24,29 +23,52 @@ async function updateMissionDecision(id, plan) {
             selectedVendor: plan.selectedVendor,
             approvedAmount: plan.price,
             aiReason: plan.reason,
-
+            confidence: plan.confidence,
             status: plan.approved
-                ? "APPROVED"
-                : "REJECTED"
+                ? "EXECUTING"
+                : "Rejected"
         }
     });
 }
 
-
 async function getMissions(organizationId) {
-    return await prisma.mission.findMany({
+    const missions = await prisma.mission.findMany({
         where: {
-            organizationId
+            organizationId,
+            status: {
+                in: ["Completed", "Rejected"]
+            }
         },
         orderBy: {
             createdAt: "desc"
         }
     });
+
+    console.log(
+        "MISSIONS SENT:",
+        missions.map(m => ({
+            title: m.title,
+            status: m.status
+        }))
+    );
+
+    return missions;
 }
 
+async function completeMission(id) {
+    return await prisma.mission.update({
+        where: {
+            id
+        },
+        data: {
+            status: "Completed"
+        }
+    });
+}
 
 module.exports = {
     createMission,
     updateMissionDecision,
-    getMissions
+    getMissions,
+    completeMission
 };

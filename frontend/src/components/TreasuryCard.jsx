@@ -1,4 +1,4 @@
-function TreasuryCard({ treasury }) {
+function TreasuryCard({ treasury, treasuryBalance }) {
   const shortWallet = treasury?.walletAddress
     ? `${treasury.walletAddress.slice(0, 6)}...${treasury.walletAddress.slice(-4)}`
     : "Unavailable";
@@ -23,7 +23,7 @@ function TreasuryCard({ treasury }) {
           color: "#2563eb"
         }}
       >
-        {treasury?.balance || 0} USDC
+        {treasuryBalance.available.toFixed(2)} USDC
       </h1>
 
       <hr style={{ marginBottom: "18px" }} />

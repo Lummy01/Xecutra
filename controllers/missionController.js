@@ -71,8 +71,28 @@ async function getTransactionStatus(req, res) {
     }
 }
 
+async function completeMission(req, res) {
+    try {
+        const mission = await missionService.completeMission(
+            req.params.id
+        );
+
+        res.json({
+            success: true,
+            mission
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
 module.exports = {
     createMission,
     getMissions,
-    getTransactionStatus
+    getTransactionStatus,
+    completeMission
 };

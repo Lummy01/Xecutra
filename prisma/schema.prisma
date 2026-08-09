@@ -59,6 +59,7 @@ model Mission {
   aiReason       String?
   approvedAmount Float?
   selectedVendor String?
+  confidence Float?
 
   escrow   Escrow?
   delivery Delivery? // ← Add this line
@@ -91,18 +92,20 @@ model Delivery {
 }
 
 model Transaction {
-  id              String   @id @default(cuid())
+  id             String   @id @default(cuid())
 
-  missionId       String
-  organizationId  String
+  missionId      String
+  organizationId String
 
-  vendor          String
+  vendor         String
 
-  amount          Float
+  amount         Float
 
-  circleTxId String @unique
+  circleTxId     String   @unique
 
-  status          String
+  status         String
 
-  createdAt       DateTime @default(now())
+  txHash         String?
+
+  createdAt      DateTime @default(now())
 }

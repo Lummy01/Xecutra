@@ -1,24 +1,42 @@
 function MissionTimeline({
   missionResult,
   deliveryResult,
-  paymentResult
+  paymentResult,
+  activeStep
 }) {
+
+  const stepOrder = [
+  "AI Analysis",
+  "Vendor Selection",
+  "Guardrails",
+  "Escrow",
+  "Delivery",
+  "Payment"
+];
+
+const currentStepIndex = stepOrder.indexOf(activeStep);
+
+const hasReached = (step) => {
+  const stepIndex = stepOrder.indexOf(step);
+  return currentStepIndex >= stepIndex;
+};
+
  return (
   <div className="card">
-    <h2>📋 Mission Timeline</h2>
+    <h2>⚡ Autonomous Mission Flow</h2>
 
     <div
   style={{
     padding: "12px",
     borderRadius: "10px",
-    background: missionResult ? "#dcfce7" : "#f3f4f6",
+    background: hasReached("AI Analysis") ? "#dcfce7" : "#f3f4f6",
     marginBottom: "10px",
     fontWeight: "bold"
   }}
 >
-  {missionResult
-    ? "🟢 Mission Created"
-    : "⚪ Mission Not Created"}
+  {hasReached("AI Analysis")
+  ? "🟢 Mission created"
+  : "⚪ Mission Not Created"}
 </div>
 
     <div
@@ -36,14 +54,14 @@ function MissionTimeline({
   style={{
     padding: "12px",
     borderRadius: "10px",
-    background: missionResult?.plan ? "#dcfce7" : "#f3f4f6",
+    background: hasReached("Guardrails") ? "#dcfce7" : "#f3f4f6",
     marginBottom: "10px",
     fontWeight: "bold"
   }}
 >
-  {missionResult?.plan
-    ? "🟢 AI Vendor Selected"
-    : "⚪ Awaiting AI Decision"}
+  {hasReached("Guardrails")
+  ? "🟢 AI Plan Generated"
+  : "⚪ Awaiting AI Decision"}
 </div>
 
     <div
@@ -61,14 +79,14 @@ function MissionTimeline({
   style={{
     padding: "12px",
     borderRadius: "10px",
-    background: missionResult?.escrow ? "#dcfce7" : "#f3f4f6",
+    background: hasReached("Escrow") ? "#dcfce7" : "#f3f4f6",
     marginBottom: "10px",
     fontWeight: "bold"
   }}
 >
-  {missionResult?.escrow
-    ? "🟢 Escrow Locked"
-    : "⚪ Waiting for Escrow"}
+  {hasReached("Escrow")
+  ? "🟢 Escrow Locked"
+  : "⚪ Waiting for Escrow"}
 </div>
 
     <div
@@ -86,14 +104,14 @@ function MissionTimeline({
   style={{
     padding: "12px",
     borderRadius: "10px",
-    background: deliveryResult ? "#dcfce7" : "#f3f4f6",
+    background: hasReached("Delivery") ? "#dcfce7" : "#f3f4f6",
     marginBottom: "10px",
     fontWeight: "bold"
   }}
 >
-  {deliveryResult
-    ? "🟢 Delivery Confirmed"
-    : "⚪ Waiting for Delivery"}
+  {hasReached("Delivery")
+  ? "🟢 Delivery Verified"
+  : "⚪ Waiting for Delivery"}
 </div>
 
     <div
@@ -111,14 +129,14 @@ function MissionTimeline({
   style={{
     padding: "12px",
     borderRadius: "10px",
-    background: paymentResult?.success ? "#dcfce7" : "#f3f4f6",
+    background: hasReached("Payment") ? "#dcfce7" : "#f3f4f6",
     marginBottom: "10px",
     fontWeight: "bold"
   }}
 >
-  {paymentResult?.success
-    ? "🟢 Payment Released"
-    : "⚪ Awaiting Payment"}
+  {hasReached("Payment")
+  ? "🟢 Payment Released"
+  : "⚪ Awaiting Payment"}
 </div>
   </div>
 );

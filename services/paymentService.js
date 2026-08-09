@@ -68,18 +68,27 @@ async function releasePayment(missionId) {
     status: transfer.transaction.state
 });
 
-const latestTransaction = await circleService.getTransactionStatus(
+const latestTransaction =
+  await circleService.getTransactionStatus(
     transfer.transaction.id
+  );
+
+console.log(
+  "Latest Transaction:",
+  JSON.stringify(latestTransaction, null, 2)
+);
+
+console.log(
+  "Circle State:",
+  latestTransaction.transaction.transaction.state
 );
 
 if (latestTransaction.success) {
-
-    await transactionService.updateTransactionStatus(
-        transfer.transaction.id,
-        latestTransaction.transaction.transaction.state,
-        latestTransaction.transaction.transaction.txHash
-    );
-
+  await transactionService.updateTransactionStatus(
+    transfer.transaction.id,
+    latestTransaction.transaction.transaction.state,
+    latestTransaction.transaction.transaction.txHash
+  );
 }
 
     return {

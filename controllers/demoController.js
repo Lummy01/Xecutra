@@ -32,30 +32,28 @@ async function executeDemo(req, res) {
       plan
     );
 
-    // Create Escrow
-    let escrow = null;
+    if (!plan.approved) {
+  return res.json({
+    success: true,
 
-    if (plan.approved) {
-      escrow = await escrowService.createEscrow(
-        mission.id,
-        mission.organizationId,
-        plan.selectedVendor,
-        plan.price
-      );
-    }
+    missionResult: {
+      mission,
+      plan,
+      escrow: null
+    },
 
-    // Confirm Delivery
-    const deliveryResult =
-      await deliveryService.confirmDelivery(
-        mission.id,
-        "Xecutra Demo"
-      );
+    deliveryResult: null,
+    paymentResult: null
+  });
+}
 
-    // Release Payment
-    const paymentResult =
-      await paymentService.releasePayment(
-        mission.id
-      );
+    // Execution stages are handled progressively by the SSE flow.
+// Do not create escrow, confirm delivery, or release payment here.
+// Those actions will happen when their corresponding execution stage is reached.
+
+const escrow = null;
+const deliveryResult = null;
+const paymentResult = null;
 
     res.json({
       success: true,
