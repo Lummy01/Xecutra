@@ -30,24 +30,13 @@ app.use("/organizations", organizationRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/demo", demoRoutes);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
     res.send("🚀 Welcome to Xecutra!");
 });
 
-app.listen(PORT, () => {
-    console.log(`Xecutra server is running on port ${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Xecutra server is running on port ${PORT}`);
 });
 
-(async () => {
-
-    const result = await circleService.getTransactionStatus(
-        "2f1a467a-5ac1-5547-929e-eab5d70e9de2"
-    );
-
-    console.log(
-        JSON.stringify(result, null, 2)
-    );
-
-})();
