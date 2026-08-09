@@ -19,6 +19,8 @@ import {
   Legend
 } from "recharts";
 
+const API_BASE_URL = "https://xecutra-backend.onrender.com";
+
 const ORGANIZATION_ID = "cmrqzq3640000fxs4r9tvvhea";
 
 function App() {
@@ -163,15 +165,15 @@ const escrowsCreated = missions.filter(
   async function loadDashboard() {
     try {
       const treasuryResponse = await axios.get(
-        `http://localhost:3000/treasury/${ORGANIZATION_ID}/balance`
+        `${API_BASE_URL}/treasury/${ORGANIZATION_ID}/balance`
       );
 
       const guardrailResponse = await axios.get(
-        `http://localhost:3000/guardrails/${ORGANIZATION_ID}`
+        `${API_BASE_URL}/guardrails/${ORGANIZATION_ID}`
       );
 
       const missionResponse = await axios.get(
-        `http://localhost:3000/missions/${ORGANIZATION_ID}`
+        `${API_BASE_URL}/missions/${ORGANIZATION_ID}`
       );
 
       setTreasury(treasuryResponse.data);
@@ -227,7 +229,7 @@ setTreasuryAnalytics({
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/missions",
+        `${API_BASE_URL}/missions`,
         {
           organizationId: ORGANIZATION_ID,
           title: formData.title,
@@ -248,7 +250,7 @@ setTreasuryAnalytics({
   async function confirmDelivery() {
     try {
       const deliveryResponse = await axios.post(
-        "http://localhost:3000/delivery",
+        `${API_BASE_URL}/delivery`,
         {
           missionId: missionResult.mission.id,
           confirmedBy: "Organization Admin"
@@ -258,7 +260,7 @@ setTreasuryAnalytics({
       setDeliveryResult(deliveryResponse.data);
 
       const paymentResponse = await axios.post(
-        "http://localhost:3000/payment/release",
+        `${API_BASE_URL}/payment/release`,
         {
           missionId: missionResult.mission.id
         }
@@ -313,7 +315,7 @@ setTreasuryAnalytics({
     setThinkingMessage("Analyzing mission requirements...");
 
     const eventSource = new EventSource(
-      "http://localhost:3000/demo/stream"
+      `${API_BASE_URL}/demo/stream`
     );
 
     eventSource.onmessage = (event) => {
@@ -654,7 +656,7 @@ eventSource.close();
 
     try {
     const response = await axios.post(
-      "http://localhost:3000/demo/execute-mission",
+      `${API_BASE_URL}/demo/execute-mission`,
       {
         organizationId: ORGANIZATION_ID,
         title: missionData.title,
@@ -721,7 +723,7 @@ async function pollTransaction(transactionId) {
   const interval = setInterval(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/missions/transaction/${transactionId}`
+        `${API_BASE_URL}/missions/transaction/${transactionId}`
       );
 
       const transaction = response.data.transaction.transaction;
@@ -773,7 +775,7 @@ setTreasuryBalance((prev) => {
 });
 
   await axios.patch(
-    `http://localhost:3000/missions/${completedMissionRef.current.missionResult.mission.id}/complete`
+    `${API_BASE_URL}/missions/${completedMissionRef.current.missionResult.mission.id}/complete`
   );
 
   await loadDashboard();
