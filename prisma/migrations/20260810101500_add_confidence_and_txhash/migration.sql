@@ -1,0 +1,3 @@
+ALTER TABLE "Mission" ADD COLUMN "confidence" DOUBLE PRECISION;
+
+ALTER TABLE "Transaction" ADD COLUMN "txHash" TEXT;
