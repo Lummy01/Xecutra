@@ -1,3 +1,7 @@
+## 🚀 Live Demo
+
+https://xecutra.vercel.app/
+
 # Xecutra
 
 > AI-Powered Execution Agent for Individuals and Organizations built on Arc, Circle, and USDC.
@@ -238,7 +242,7 @@ Instead of simply generating recommendations, Xecutra demonstrates how AI agents
 - 👥 Multi-user and multi-organization support
 - 🔐 Multi-signature approval policies
 - 📱 Notifications and alerts
-- 🌐 Production deployment
+- 🌐 Advanced production infrastructure
 
 ## Getting Started
 
