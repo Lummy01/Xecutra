@@ -5,215 +5,228 @@ const deliveryService = require("../services/deliveryService");
 const paymentService = require("../services/paymentService");
 
 async function executeDemo(req, res) {
-  try {
-    const {
-      organizationId,
-      title,
-      description,
-      estimatedCost,
-      deadline
-    } = req.body;
+    try {
+        const {
+            organizationId,
+            title,
+            description,
+            estimatedCost,
+            deadline
+        } = req.body;
 
-    // Create Mission
-    const mission = await missionService.createMission({
-      organizationId,
-      title,
-      description,
-      estimatedCost,
-      deadline
-    });
+        // 1. Create the mission
+        const mission = await missionService.createMission({
+            organizationId,
+            title,
+            description,
+            estimatedCost,
+            deadline
+        });
 
-    // AI chooses vendor
-    const plan = await aiPlanner.planMission(mission);
+        // 2. AI plans the mission
+        const plan = await aiPlanner.planMission(mission);
 
-    // Save AI decision
-    await missionService.updateMissionDecision(
-      mission.id,
-      plan
-    );
+        // 3. Save the AI decision
+        await missionService.updateMissionDecision(
+            mission.id,
+            plan
+        );
 
-    if (!plan.approved) {
-  return res.json({
-    success: true,
+        // If AI rejects the mission, stop here
+        if (!plan.approved) {
+            return res.json({
+                success: true,
 
-    missionResult: {
-      mission,
-      plan,
-      escrow: null
-    },
+                missionResult: {
+                    mission,
+                    plan,
+                    escrow: null
+                },
 
-    deliveryResult: null,
-    paymentResult: null
-  });
-}
+                deliveryResult: null,
+                paymentResult: null
+            });
+        }
 
-    // Execution stages are handled progressively by the SSE flow.
-// Do not create escrow, confirm delivery, or release payment here.
-// Those actions will happen when their corresponding execution stage is reached.
+        // 4. Create and lock escrow
+        const escrow = await escrowService.createEscrow(
+            mission.id,
+            organizationId,
+            plan.selectedVendor,
+            plan.price
+        );
 
-const escrow = null;
-const deliveryResult = null;
-const paymentResult = null;
+        // 5. Confirm delivery
+        const deliveryResult = await deliveryService.confirmDelivery(
+            mission.id,
+            "Xecutra AI Agent"
+        );
 
-    res.json({
-      success: true,
+        // 6. Release payment through Circle
+        const paymentResult = await paymentService.releasePayment(
+            mission.id
+        );
 
-      missionResult: {
-        mission,
-        plan,
-        escrow
-      },
+        // 7. Return the complete execution result
+        return res.json({
+            success: true,
 
-      deliveryResult,
+            missionResult: {
+                mission,
+                plan,
+                escrow
+            },
 
-      paymentResult
-    });
+            deliveryResult,
+            paymentResult
+        });
 
-  } catch (error) {
-    console.error(error);
+    } catch (error) {
+        console.error("DEMO EXECUTION ERROR:", error);
 
-    res.status(500).json({
-      error: error.message
-    });
-  }
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
 }
 
 function streamMission(req, res) {
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
 
-  res.flushHeaders();
+    res.flushHeaders();
 
-  res.write(
-    `data: ${JSON.stringify({
-      step: "connected",
-      message: "Client connected"
-    })}\n\n`
-  );
-  setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "AI Analysis",
-      status: "running",
-      message: "🤖 AI analyzing mission..."
-    })}\n\n`
-  );
-}, 1000);
+    res.write(
+        `data: ${JSON.stringify({
+            step: "connected",
+            message: "Client connected"
+        })}\n\n`
+    );
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "AI Analysis",
-      status: "success",
-      message: "🤖 Mission analyzed successfully"
-    })}\n\n`
-  );
-}, 2500);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "AI Analysis",
+                status: "running",
+                message: "🤖 AI analyzing mission..."
+            })}\n\n`
+        );
+    }, 1000);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Vendor Selection",
-      status: "running",
-      message: "🔍 Searching vendors..."
-    })}\n\n`
-  );
-}, 3000);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "AI Analysis",
+                status: "success",
+                message: "🤖 Mission analyzed successfully"
+            })}\n\n`
+        );
+    }, 2500);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Vendor Selection",
-      status: "success",
-      message: "✅ Vendor selected"
-    })}\n\n`
-  );
-}, 5000);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Vendor Selection",
+                status: "running",
+                message: "🔍 Searching vendors..."
+            })}\n\n`
+        );
+    }, 3000);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Guardrails",
-      status: "running",
-      message: "🛡 Checking treasury guardrails..."
-    })}\n\n`
-  );
-}, 5500);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Vendor Selection",
+                status: "success",
+                message: "✅ Vendor selected"
+            })}\n\n`
+        );
+    }, 5000);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Guardrails",
-      status: "success",
-      message: "✅ Guardrails approved"
-    })}\n\n`
-  );
-}, 7500);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Guardrails",
+                status: "running",
+                message: "🛡 Checking treasury guardrails..."
+            })}\n\n`
+        );
+    }, 5500);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Escrow",
-      status: "running",
-      message: "🔒 Locking funds into escrow..."
-    })}\n\n`
-  );
-}, 8000);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Guardrails",
+                status: "success",
+                message: "✅ Guardrails approved"
+            })}\n\n`
+        );
+    }, 7500);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Escrow",
-      status: "success",
-      message: "🔒 Funds locked in escrow"
-    })}\n\n`
-  );
-}, 10000);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Escrow",
+                status: "running",
+                message: "🔒 Locking funds into escrow..."
+            })}\n\n`
+        );
+    }, 8000);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Delivery",
-      status: "running",
-      message: "📦 Verifying delivery..."
-    })}\n\n`
-  );
-}, 10500);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Escrow",
+                status: "success",
+                message: "🔒 Funds locked in escrow"
+            })}\n\n`
+        );
+    }, 10000);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Delivery",
-      status: "success",
-      message: "📦 Delivery confirmed"
-    })}\n\n`
-  );
-}, 13000);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Delivery",
+                status: "running",
+                message: "📦 Verifying delivery..."
+            })}\n\n`
+        );
+    }, 10500);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Payment",
-      status: "running",
-      message: "💸 Broadcasting Circle transaction..."
-    })}\n\n`
-  );
-}, 13500);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Delivery",
+                status: "success",
+                message: "📦 Delivery confirmed"
+            })}\n\n`
+        );
+    }, 13000);
 
-setTimeout(() => {
-  res.write(
-    `data: ${JSON.stringify({
-      step: "Payment",
-      status: "success",
-      message: "✅ Circle transaction confirmed on Arc"
-    })}\n\n`
-  );
-}, 16500);
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Payment",
+                status: "running",
+                message: "💸 Broadcasting Circle transaction..."
+            })}\n\n`
+        );
+    }, 13500);
 
+    setTimeout(() => {
+        res.write(
+            `data: ${JSON.stringify({
+                step: "Payment",
+                status: "success",
+                message: "✅ Circle transaction confirmed on Arc"
+            })}\n\n`
+        );
+    }, 16500);
 }
 
 module.exports = {
-  executeDemo,
-  streamMission
+    executeDemo,
+    streamMission
 };
