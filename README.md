@@ -279,11 +279,16 @@ CIRCLE_API_KEY=your_circle_api_key
 CIRCLE_ENTITY_SECRET=your_entity_secret
 ```
 
+### Set up the database
+
+Run migrations and seed the database with a demo organization, treasury, guardrails, and vendor:
+
+npx prisma migrate deploy
+node prisma/seed.js
+
 ### Run the backend
 
-```bash
 node index.js
-```
 
 ### Run the frontend
 
@@ -296,8 +301,10 @@ npm run dev
 
 The application will be available at:
 
-- Frontend: http://localhost:5175 (or another available Vite port)
-- Backend API: http://localhost:3000
+- Frontend: <http://localhost:5173> (or another available Vite port)
+- Backend API: <http://localhost:3000>
+
+> **Note:** The frontend's `API_BASE_URL` (in `frontend/src/App.jsx`) is currently hardcoded to the deployed Render backend (`https://xecutra-backend.onrender.com`). To test against your local backend instead, change this value to `http://localhost:3000`.
 
 ## License
 
