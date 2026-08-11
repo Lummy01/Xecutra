@@ -6,8 +6,10 @@ function MissionForm({
   deliveryResult,
   paymentResult,
   confirmDelivery,
+  selectedMission,
   activeStep
 }) {
+  console.log("SELECTED MISSION:", selectedMission);
   const stepOrder = [
     "AI Analysis",
     "Vendor Selection",

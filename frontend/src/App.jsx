@@ -956,6 +956,7 @@ return (
   paymentResult={paymentResult}
   confirmDelivery={confirmDelivery}
   activeStep={activeStep}
+  selectedMission={selectedMission}
 />
 
         {missionResult && (

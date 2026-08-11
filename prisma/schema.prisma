@@ -61,8 +61,9 @@ model Mission {
   selectedVendor String?
   confidence Float?
 
-  escrow   Escrow?
-  delivery Delivery? // ← Add this line
+    escrow      Escrow?
+  delivery    Delivery?
+  transactions Transaction[]
 
   organization Organization @relation(fields: [organizationId], references: [id])
 }
@@ -95,6 +96,7 @@ model Transaction {
   id             String   @id @default(cuid())
 
   missionId      String
+  mission Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
   organizationId String
 
   vendor         String

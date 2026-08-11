@@ -33,16 +33,19 @@ async function updateMissionDecision(id, plan) {
 
 async function getMissions(organizationId) {
     const missions = await prisma.mission.findMany({
-        where: {
-            organizationId,
-            status: {
-                in: ["Completed", "Rejected"]
-            }
-        },
-        orderBy: {
-            createdAt: "desc"
-        }
-    });
+  where: {
+    organizationId,
+    status: {
+      in: ["Completed", "Rejected"]
+    }
+  },
+  include: {
+    transactions: true
+  },
+  orderBy: {
+    createdAt: "desc"
+  }
+});
 
     console.log(
         "MISSIONS SENT:",
