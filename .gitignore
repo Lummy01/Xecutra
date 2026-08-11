@@ -1,7 +1,17 @@
 node_modules
 # Keep environment variables out of version control
 .env
+.env.*
+*.local.txt
+*.local.json
 
 /generated/prisma
 
 recovery/
+recovery_file_*.dat
+
+# Entity secret rotation — temporary, never commit
+NEW_ENTITY_SECRET.local.txt
+NEW_ENTITY_SECRET*.txt
+ROTATION_CIPHERTEXTS.local.json
+ROTATION_CIPHERTEXTS*.json

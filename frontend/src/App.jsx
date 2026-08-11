@@ -2159,13 +2159,11 @@ return (
               </p>
 
               <p>
-                <p>
   <strong>Risk Level:</strong>{" "}
   {selectedMission.status === "Completed"
     ? "LOW"
     : "CRITICAL"}
 </p>
-              </p>
 
               <p
   style={{
@@ -2281,10 +2279,10 @@ return (
 
                 <span>
   {selectedMission.status === "Completed"
-  ? `🏢 Vendor Selected — ${
-      selectedMission.selectedVendor || "No vendor selected"
-    }`
-  : "🏢 Vendor Selection Failed"}
+    ? `🏢 Vendor Selected — ${selectedMission.selectedVendor || "No vendor selected"}`
+    : selectedMission.selectedVendor
+    ? `🏢 Vendor Considered — ${selectedMission.selectedVendor} (Rejected by Guardrails)`
+    : "🏢 No Vendor Met Confidence Threshold"}
 </span>
               </div>
 
