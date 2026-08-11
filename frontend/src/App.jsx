@@ -2521,76 +2521,76 @@ fontWeight: "400"
 
             <h3>🔗 Circle Settlement</h3>
 
-            <div
-              style={{
-                background: "#f8fafc",
-                borderRadius: "12px",
-                padding: "16px",
-                lineHeight: "2"
-              }}
-            >
-              <div>
-                <strong>Transaction Status:</strong>{" "}
-                <span
-                  style={{
-                    display: "inline-block",
-                    padding: "4px 10px",
-                    borderRadius: "999px",
-                    fontWeight: "700",
-                    fontSize: "13px",
-                    color:
-  selectedMission.status === "Rejected"
-    ? "#4b5563"
-    : paymentResult?.circleTransaction?.state === "CONFIRMED" ||
-      paymentResult?.circleTransaction?.state === "COMPLETE"
-    ? "#166534"
-    : "#1d4ed8",
-                    background:
-  selectedMission.status === "Rejected"
-    ? "#f3f4f6"
-    : paymentResult?.circleTransaction?.state === "CONFIRMED" ||
-      paymentResult?.circleTransaction?.state === "COMPLETE"
-    ? "#dcfce7"
-    : "#dbeafe"
-                  }}
-                >
-                                {selectedMission.status === "Rejected"
-                ? "⚪ Not Executed"
-                : paymentResult?.circleTransaction?.state === "CONFIRMED" ||
-                  paymentResult?.circleTransaction?.state === "COMPLETE"
-                ? "🟢 Confirmed"
-                : "🔵 Pending"}
-                </span>
-              </div>
+<div
+  style={{
+    background: "#f8fafc",
+    borderRadius: "12px",
+    padding: "16px",
+    lineHeight: "2"
+  }}
+>
+  <div>
+    <strong>Transaction Status:</strong>{" "}
+    <span
+      style={{
+        display: "inline-block",
+        padding: "4px 10px",
+        borderRadius: "999px",
+        fontWeight: "700",
+        fontSize: "13px",
+        color:
+          selectedMission.status === "Rejected"
+            ? "#4b5563"
+            : selectedMission.transactions?.[0]?.status === "CONFIRMED" ||
+              selectedMission.transactions?.[0]?.status === "COMPLETE"
+            ? "#166534"
+            : "#1d4ed8",
+        background:
+          selectedMission.status === "Rejected"
+            ? "#f3f4f6"
+            : selectedMission.transactions?.[0]?.status === "CONFIRMED" ||
+              selectedMission.transactions?.[0]?.status === "COMPLETE"
+            ? "#dcfce7"
+            : "#dbeafe"
+      }}
+    >
+      {selectedMission.status === "Rejected"
+        ? "⚪ Not Executed"
+        : selectedMission.transactions?.[0]?.status === "CONFIRMED" ||
+          selectedMission.transactions?.[0]?.status === "COMPLETE"
+        ? "🟢 Confirmed"
+        : "🔵 Pending"}
+    </span>
+  </div>
 
-              <div>
-                <strong>Transaction ID:</strong>
-                <br />
-                <span
-                  style={{
-                    fontSize: "12px",
-                    color: "#6b7280",
-                    wordBreak: "break-all"
-                  }}
-                >
-                  {paymentResult?.circleTransaction?.id || "-"}
-                </span>
-              </div>
+  <div>
+    <strong>Transaction ID:</strong>
+    <br />
+    <span
+      style={{
+        fontSize: "12px",
+        color: "#6b7280",
+        wordBreak: "break-all"
+      }}
+    >
+      {selectedMission.transactions?.[0]?.circleTxId || "-"}
+    </span>
+  </div>
 
-              <div>
-                <strong>Transaction Hash:</strong>
-                <br />
-                <span
-                  style={{
-                    fontSize: "12px",
-                    color: "#2563eb",
-                    wordBreak: "break-all"
-                  }}
-                >
-                  {paymentResult?.circleTransaction?.txHash || "-"}
-                </span>
-              </div>
-            </div>
+  <div>
+    <strong>Transaction Hash:</strong>
+    <br />
+    <span
+      style={{
+        fontSize: "12px",
+        color: "#2563eb",
+        wordBreak: "break-all"
+      }}
+    >
+      {selectedMission.transactions?.[0]?.txHash || "-"}
+    </span>
+  </div>
+</div>
 
                     </div>
         )}

@@ -2,6 +2,7 @@ const missionService = require("../services/missionService");
 const aiPlanner = require("../services/aiPlanner");
 const escrowService = require("../services/escrowService");
 const circleService = require("../services/circleService");
+const transactionService = require("../services/transactionService");
 
 async function createMission(req, res) {
     try {
@@ -58,6 +59,14 @@ async function getTransactionStatus(req, res) {
         const result = await circleService.getTransactionStatus(
             req.params.transactionId
         );
+
+        if (result.success) {
+            await transactionService.updateTransactionStatus(
+                req.params.transactionId,
+                result.transaction.transaction.state,
+                result.transaction.transaction.txHash
+            );
+        }
 
         res.json(result);
 
