@@ -246,11 +246,11 @@ Instead of simply generating recommendations, Xecutra demonstrates how AI agents
 - ✅ USDC payment execution on Arc
 - ✅ Circle transaction recording
 - ✅ Live transaction status synchronization
+- ✅ Treasury analytics dashboard
 - ✅ React dashboard
 
 ### Next Milestones
 
-- 📊 Treasury analytics dashboard
 - 🤖 LLM-powered vendor selection
 - 📈 Treasury forecasting and budgeting
 - 👥 Multi-user and multi-organization support
