@@ -22,6 +22,20 @@ The current MVP demonstrates this vision through an autonomous treasury workflow
 
 Xecutra demonstrates what an autonomous economic agent looks like when given a wallet, programmable money, and financial guardrails.
 
+## Table of Contents
+
+- [The Problem](#the-problem)
+- [The Solution](#the-solution)
+- [Key Features](#key-features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Demo Flow](#demo-flow)
+- [Why Arc?](#why-arc)
+- [Roadmap](#roadmap)
+- [Project Status](#project-status)
+- [Getting Started](#getting-started)
+- [License](#license)
+
 ## The Problem
 
 Financial workflows remain heavily dependent on manual approvals, whether for individuals managing personal finances or organizations overseeing treasury operations.
@@ -231,11 +245,11 @@ Instead of simply generating recommendations, Xecutra demonstrates how AI agents
 - ✅ Delivery confirmation
 - ✅ USDC payment execution on Arc
 - ✅ Circle transaction recording
+- ✅ Live transaction status synchronization
 - ✅ React dashboard
 
 ### Next Milestones
 
-- 🔄 Live transaction status synchronization
 - 📊 Treasury analytics dashboard
 - 🤖 LLM-powered vendor selection
 - 📈 Treasury forecasting and budgeting
@@ -244,7 +258,21 @@ Instead of simply generating recommendations, Xecutra demonstrates how AI agents
 - 📱 Notifications and alerts
 - 🌐 Advanced production infrastructure
 
+## Project Status
+
+Xecutra is currently an MVP built for the Arc Hackathon.
+
+The current implementation demonstrates autonomous treasury execution using programmable guardrails, escrow, Circle Developer-Controlled Wallets, and USDC on Arc. Future releases will expand AI capabilities, analytics, multi-user support, and production infrastructure as outlined in the roadmap.
+
 ## Getting Started
+
+### Prerequisites
+
+Before running Xecutra locally, ensure you have:
+
+- Node.js 18+
+- PostgreSQL
+- A Circle Developer-Controlled Wallet account and API credentials
 
 ### Clone the repository
 
@@ -283,12 +311,16 @@ CIRCLE_ENTITY_SECRET=your_entity_secret
 
 Run migrations and seed the database with a demo organization, treasury, guardrails, and vendor:
 
+```bash
 npx prisma migrate deploy
 node prisma/seed.js
+```
 
 ### Run the backend
 
+```bash
 node index.js
+```
 
 ### Run the frontend
 
