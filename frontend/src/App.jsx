@@ -1626,9 +1626,9 @@ return (
                 border: "1px solid #e5e7eb",
                 borderRadius: "12px",
                 background:
-                  activeStep === log.step
-                    ? "#eff6ff"
-                    : "#ffffff",
+  activeStep === log.step && log.status !== "success"
+    ? "#eff6ff"
+    : "#ffffff",
                 opacity: 0,
                 animation: `fadeInUp .45s ease ${index * 0.35}s forwards`
               }}
@@ -2064,16 +2064,21 @@ return (
               <h2 style={{ margin: 0 }}>📋 Mission Details</h2>
 
               <button
-                onClick={() => setSelectedMission(null)}
-                style={{
-                  border: "none",
-                  background: "transparent",
-                  fontSize: "26px",
-                  cursor: "pointer"
-                }}
-              >
-                ×
-              </button>
+  onClick={() => setSelectedMission(null)}
+  aria-label="Close mission details"
+  style={{
+    border: "none",
+    background: "transparent",
+    fontSize: "26px",
+    lineHeight: "1",
+    cursor: "pointer",
+    color: "#111827",
+    opacity: 1,
+    padding: "4px 8px"
+  }}
+>
+  ×
+</button>
             </div>
 
             <p><strong>Mission:</strong> {selectedMission.title}</p>
@@ -2093,7 +2098,7 @@ return (
     selectedMission.status === "Rejected"
       ? selectedMission.estimatedCost
       : selectedMission.approvedAmount || 0
-  ).toFixed(2)} USDC
+  ).toFixed(3)} USDC
 </p>
 
             <p>
@@ -2154,15 +2159,19 @@ return (
               </p>
 
               <p>
-                <strong>Treasury After Payment:</strong>{" "}
-                {aiDecision.treasuryAfter.toFixed(2)} USDC
-              </p>
+  <strong>Treasury Balance:</strong>{" "}
+  {treasuryBalance.total.toFixed(2)} USDC
+</p>
 
               <p>
   <strong>Risk Level:</strong>{" "}
-  {selectedMission.status === "Completed"
+  {selectedMission.status !== "Completed"
+    ? "CRITICAL"
+    : selectedMission.confidence >= 95
     ? "LOW"
-    : "CRITICAL"}
+    : selectedMission.confidence >= 90
+    ? "MEDIUM"
+    : "HIGH"}
 </p>
 
               <p

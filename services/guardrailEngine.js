@@ -4,26 +4,24 @@ function validatePurchase(cost, guardrails, treasuryBalance) {
     if (cost > guardrails.maxVendorSpend) {
         return {
             approved: false,
-            reason: "Mission exceeds maximum vendor spend."
+            reason: `Requested amount of ${cost.toFixed(2)} USDC exceeds the maximum vendor spend limit of ${guardrails.maxVendorSpend.toFixed(2)} USDC.`
         };
     }
 
     // Rule 2: Maintain treasury reserve
     const remaining = treasuryBalance - cost;
-
-    const minimumRequired =
-        treasuryBalance * (guardrails.minimumReserve / 100);
+    const minimumRequired = treasuryBalance * (guardrails.minimumReserve / 100);
 
     if (remaining < minimumRequired) {
         return {
             approved: false,
-            reason: "Mission would reduce the treasury below the minimum reserve."
+            reason: `Payment would leave ${remaining.toFixed(2)} USDC in treasury, below the required minimum reserve of ${minimumRequired.toFixed(2)} USDC (${guardrails.minimumReserve}% of balance).`
         };
     }
 
     return {
         approved: true,
-        reason: "Mission satisfies all guardrails."
+        reason: `Cost of ${cost.toFixed(2)} USDC is within the ${guardrails.maxVendorSpend.toFixed(2)} USDC spend limit, and treasury reserve of ${guardrails.minimumReserve}% is maintained (${remaining.toFixed(2)} USDC remaining).`
     };
 }
 

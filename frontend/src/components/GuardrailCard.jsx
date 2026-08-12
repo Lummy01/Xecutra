@@ -1,6 +1,6 @@
 function GuardrailCard({ guardrails }) {
   return (
-    <div>
+  <div className="card">
       <h2>🛡 Treasury Guardrails</h2>
 
       <div style={{ marginTop: "20px" }}>
