@@ -196,10 +196,12 @@ if (search.includes("above") || search.includes("over")) {
                   <td>{mission.selectedVendor || "-"}</td>
 
                   <td>
-                    {mission.approvedAmount
-                      ? `${Number(mission.approvedAmount).toFixed(3)} USDC`
-                      : "-"}
-                  </td>
+  {mission.status === "Rejected"
+    ? "-"
+    : mission.approvedAmount
+    ? `${Number(mission.approvedAmount).toFixed(3)} USDC`
+    : "-"}
+</td>
 
                   <td>
                     <span

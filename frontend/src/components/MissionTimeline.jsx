@@ -86,7 +86,7 @@ const hasReached = (step) => {
 >
   {hasReached("Escrow")
   ? "🟢 Escrow Locked"
-  : "⚪ Waiting for Escrow"}
+  : "⚪ Awaiting Escrow"}
 </div>
 
     <div
@@ -111,7 +111,7 @@ const hasReached = (step) => {
 >
   {hasReached("Delivery")
   ? "🟢 Delivery Verified"
-  : "⚪ Waiting for Delivery"}
+  : "⚪ Awaiting Delivery"}
 </div>
 
     <div
@@ -135,7 +135,7 @@ const hasReached = (step) => {
   }}
 >
   {hasReached("Payment")
-  ? "🟢 Payment Released"
+  ? "🟢 Payment Settled"
   : "⚪ Awaiting Payment"}
 </div>
   </div>

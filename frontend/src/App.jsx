@@ -1983,7 +1983,7 @@ return (
                 marginTop: "15px"
               }}
             >
-              Waiting for the first autonomous mission...
+              Waiting for the next autonomous mission...
             </div>
           ) : (
             treasuryActivity.map((activity, index) => (

@@ -15,13 +15,13 @@ function validatePurchase(cost, guardrails, treasuryBalance) {
     if (remaining < minimumRequired) {
         return {
             approved: false,
-            reason: `Payment would leave ${remaining.toFixed(2)} USDC in treasury, below the required minimum reserve of ${minimumRequired.toFixed(2)} USDC (${guardrails.minimumReserve}% of balance).`
+            reason: `Payment would leave ${remaining.toFixed(3)} USDC in treasury, below the required minimum reserve of ${minimumRequired.toFixed(2)} USDC (${guardrails.minimumReserve}% of balance).`
         };
     }
 
     return {
         approved: true,
-        reason: `Cost of ${cost.toFixed(2)} USDC is within the ${guardrails.maxVendorSpend.toFixed(2)} USDC spend limit, and treasury reserve of ${guardrails.minimumReserve}% is maintained (${remaining.toFixed(2)} USDC remaining).`
+        reason: `Cost of ${cost.toFixed(3)} USDC is within the ${guardrails.maxVendorSpend.toFixed(2)} USDC spend limit, and treasury reserve of ${guardrails.minimumReserve}% is maintained.`
     };
 }
 
